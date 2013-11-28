@@ -3,6 +3,7 @@ PHP KeyStore-Filesystem
 
 [kumatch/keystore](https://github.com/kumatch/php-keystore) driver for file system.
 
+[![Build Status](https://travis-ci.org/kumatch/php-keystore-filesystem.png?branch=master)](https://travis-ci.org/kumatch/php-keystore-filesystem)
 
 
 Install
