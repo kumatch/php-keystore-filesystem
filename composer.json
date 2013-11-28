@@ -1,0 +1,29 @@
+{
+    "name": "kumatch/keystore-filesystem",
+    "description":"kumatch/keystore driver for file system.",
+    "type":"library",
+    "homepage": "https://github.com/kumatch/php-keystore-filesystem",
+    "keywords":["storage", "file", "filesystem"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Yosuke Kumakura",
+            "homepage": "https://github.com/kumatch"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "kumatch/keystore": "*",
+        "kumatch/path": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.*",
+        "kumatch/fs-temp": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Kumatch\\KeyStore\\Filesystem": "src/"
+        }
+    }
+}
