@@ -7,7 +7,10 @@ use Kumatch\KeyStore\Exception\ErrorException;
 
 class Driver implements AccessDriverInterface
 {
+    /** @var  string */
     protected $rootPath;
+    /** @var  Access */
+    protected $access;
 
     public function __construct($rootPath)
     {
@@ -48,11 +51,11 @@ class Driver implements AccessDriverInterface
     {
         $filename = $this->createPath($key);
 
-        if (is_file($filename)) {
-            return file_get_contents($filename);
-        } else {
+        if (!$this->access()->isFile($filename)) {
             return null;
         }
+
+        return $this->access()->get($filename);
     }
 
     /**
@@ -63,11 +66,11 @@ class Driver implements AccessDriverInterface
     {
         $filename = $this->createPath($key);
 
-        if (!is_file($filename)) {
+        if (!$this->access()->isFile($filename)) {
             return true;
         }
 
-        if (!unlink($filename)) {
+        if (!$this->access()->unlink($filename)) {
             return false;
         }
 
@@ -82,9 +85,7 @@ class Driver implements AccessDriverInterface
      */
     public function exists($key)
     {
-        $filename = $this->createPath($key);
-
-        return is_file($filename);
+        return $this->access()->isFile($this->createPath($key));
     }
 
     /**
@@ -93,33 +94,38 @@ class Driver implements AccessDriverInterface
      */
     public function isNamespace($key)
     {
-        $filename = $this->createPath($key);
-
-        return is_dir($filename);
+        return $this->access()->isDir($this->createPath($key));
     }
 
 
     /**
+     * @return Access
+     */
+    protected function access()
+    {
+        if (!$this->access) {
+            $this->access = new Access();
+        }
+
+        return $this->access;
+    }
+
+    /**
      * @param $filename
-     * @param $value
+     * @param $content
      * @param bool $append
      * @return bool
      * @throws ErrorException
      */
-    protected function writeToFile($filename, $value, $append = false)
+    protected function writeToFile($filename, $content, $append = false)
     {
         $this->createDirectory(Path::dirname($filename));
 
-        if (is_dir($filename)) {
+        if ($this->access()->isDir($filename)) {
             throw new ErrorException();
         }
 
-        if ($append) {
-            $result = file_put_contents($filename, $value, FILE_APPEND);
-        } else {
-            $result = file_put_contents($filename, $value);
-        }
-
+        $result = $this->access()->put($filename, $content, $append);
         if ($result === false) {
             throw new ErrorException();
         }
@@ -149,12 +155,12 @@ class Driver implements AccessDriverInterface
      */
     protected function createDirectory($dirname)
     {
-        if (file_exists($dirname)) {
-            if (!is_dir($dirname)) {
+        if ($this->access()->exists($dirname)) {
+            if (!$this->access()->isDir($dirname)) {
                 throw new ErrorException();
             }
         } else {
-            if (!@mkdir($dirname, 0755, true)) {
+            if (!@$this->access()->mkdir($dirname, 0755, true)) {
                 throw new ErrorException();
             }
         }
@@ -177,13 +183,13 @@ class Driver implements AccessDriverInterface
     protected function removeParents($path)
     {
         while ($this->isFollowedRootPath($path)) {
-            $files = array_diff(scandir($path), array('.','..'));
+            $files = array_diff($this->access()->scandir($path), array('.','..'));
 
             if (count($files) > 0) {
                 break;
             }
 
-            @rmdir($path);
+            @$this->access()->rmdir($path);
             $path = Path::dirname($path);
         }
     }
