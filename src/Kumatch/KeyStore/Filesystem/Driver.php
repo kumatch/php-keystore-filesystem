@@ -3,7 +3,8 @@ namespace Kumatch\KeyStore\Filesystem;
 
 use Kumatch\Path;
 use Kumatch\KeyStore\AccessDriverInterface;
-use Kumatch\KeyStore\Exception\ErrorException;
+use Kumatch\KeyStore\Filesystem\Exception\ErrorException;
+use Kumatch\KeyStore\Filesystem\Exception\InvalidArgumentException;
 
 class Driver implements AccessDriverInterface
 {
@@ -14,6 +15,10 @@ class Driver implements AccessDriverInterface
 
     public function __construct($rootPath)
     {
+        if (!is_dir($rootPath)) {
+            throw new InvalidArgumentException(sprintf('"%s" directory not exists.', $rootPath));
+        }
+
         $this->rootPath = $rootPath;
     }
 

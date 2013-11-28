@@ -24,6 +24,24 @@ And install your dependencies.
 
 
 
+Usage
+-----
+
+```php
+use Kumatch\KeyStore\Filesystem\Driver;
+
+$rootPath = "/path/to/storage";
+$driver = new Driver($rootPath);
+```
+
+### __construct ($rootPath)
+
+Set a file system directory path for file storage.
+
+If $rootPath is not direcotry or not exists, throw exception `Kumatch\KeyStore\Filesystem\Exception\InvalidArgumentException`.
+
+
+
 License
 --------
 

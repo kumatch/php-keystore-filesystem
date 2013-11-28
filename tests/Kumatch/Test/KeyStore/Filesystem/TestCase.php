@@ -43,7 +43,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfPathIsTraversed()
     {
@@ -57,7 +57,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfKeyIsBlank()
     {
@@ -71,7 +71,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfKeyIsDotOnly()
     {

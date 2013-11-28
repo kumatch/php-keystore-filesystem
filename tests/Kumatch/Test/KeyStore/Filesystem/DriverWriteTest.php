@@ -91,7 +91,7 @@ class DriverWriteTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfParentPathFileIsExists()
     {
@@ -112,7 +112,7 @@ class DriverWriteTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfNestedPathFileIsExists()
     {
@@ -137,7 +137,7 @@ class DriverWriteTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Kumatch\KeyStore\Exception\ErrorException
+     * @expectedException \Kumatch\KeyStore\Filesystem\Exception\ErrorException
      */
     public function throwExceptionIfDirectoryIsExists()
     {
