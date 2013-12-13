@@ -19,7 +19,7 @@ class Driver implements AccessDriverInterface
             throw new InvalidArgumentException(sprintf('"%s" directory not exists.', $rootPath));
         }
 
-        $this->rootPath = $rootPath;
+        $this->rootPath = Path::normalize($rootPath);
     }
 
     /**
