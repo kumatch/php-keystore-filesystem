@@ -9,12 +9,12 @@ PHP KeyStore-Filesystem
 Install
 -----
 
-Add "kumatch/fs-keystore-filesystem" as a dependency in your project's composer.json file.
+Add "kumatch/keystore-filesystem" as a dependency in your project's composer.json file.
 
 
     {
       "require": {
-        "kumatch/fs-keystore-filesystem": "*"
+        "kumatch/keystore-filesystem": "*"
       }
     }
 
