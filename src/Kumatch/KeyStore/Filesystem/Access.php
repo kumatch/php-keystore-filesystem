@@ -18,6 +18,8 @@ class Access
      */
     public function isFile($filename)
     {
+        $filename = preg_replace('![/]+$!', '', $filename);
+
         return is_file($filename);
     }
 
@@ -27,6 +29,8 @@ class Access
      */
     public function isDir($filename)
     {
+        $filename = sprintf('%s/', preg_replace('![/]+$!', '', $filename));
+
         return is_dir($filename);
     }
 
