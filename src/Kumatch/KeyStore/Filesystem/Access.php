@@ -95,4 +95,24 @@ class Access
     {
         return rmdir($filename);
     }
+
+    /**
+     * @param $src
+     * @param $dst
+     * @return bool
+     */
+    public function copy($src, $dst)
+    {
+        return copy($src, $dst);
+    }
+
+    /**
+     * @param $src
+     * @param $dst
+     * @return bool
+     */
+    public function rename($src, $dst)
+    {
+        return rename($src, $dst);
+    }
 }

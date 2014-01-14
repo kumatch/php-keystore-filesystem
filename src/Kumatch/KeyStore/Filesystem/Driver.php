@@ -85,6 +85,43 @@ class Driver implements AccessDriverInterface
     }
 
     /**
+     * @param string $src
+     * @param string $dst
+     * @throws Exception\ErrorException
+     * @return bool
+     */
+    public function copy($src, $dst)
+    {
+        $srcFilename = $this->createPath($src);
+        $dstFilename = $this->createPath($dst);
+
+        if (!$this->prepareTranslation($srcFilename, $dstFilename)) {
+            return false;
+        }
+
+        return $this->access()->copy($srcFilename, $dstFilename);
+    }
+
+    /**
+     * @param $src
+     * @param $dst
+     * @return bool
+     * @throws Exception\ErrorException
+     */
+    public function rename($src, $dst)
+    {
+        $srcFilename = $this->createPath($src);
+        $dstFilename = $this->createPath($dst);
+
+        if (!$this->prepareTranslation($srcFilename, $dstFilename)) {
+            return false;
+        }
+
+        return $this->access()->rename($srcFilename, $dstFilename);
+    }
+
+
+    /**
      * @param $key
      * @return bool
      */
@@ -137,6 +174,28 @@ class Driver implements AccessDriverInterface
 
         return true;
     }
+
+    /**
+     * @param $src
+     * @param $dst
+     * @return bool
+     * @throws Exception\ErrorException
+     */
+    protected function prepareTranslation($src, $dst)
+    {
+        if (!$this->access()->isFile($src)) {
+            return false;
+        }
+
+        $this->createDirectory(Path::dirname($dst));
+
+        if ($this->access()->isDir($dst)) {
+            throw new ErrorException();
+        }
+
+        return true;
+    }
+
 
     /**
      * @param $key
