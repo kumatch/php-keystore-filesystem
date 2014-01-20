@@ -85,6 +85,40 @@ class Driver implements AccessDriverInterface
     }
 
     /**
+     * @param string $key
+     * @param string $filename
+     * @throws InvalidArgumentException
+     * @return bool
+     */
+    public function import($key, $filename)
+    {
+        if (!is_file($filename)) {
+            throw new InvalidArgumentException();
+        }
+
+        return $this->copyStream($filename, $this->createPath($key));
+    }
+
+    /**
+     * @param string $key
+     * @param string $filename
+     * @throws InvalidArgumentException
+     * @return bool
+     */
+    public function export($key, $filename)
+    {
+        if (is_dir($filename)) {
+            throw new InvalidArgumentException();
+        }
+
+        if (!$this->exists($key)) {
+            return touch($filename);
+        }
+
+        return $this->copyStream($this->createPath($key), $filename);
+    }
+
+    /**
      * @param string $src
      * @param string $dst
      * @throws Exception\ErrorException
@@ -170,6 +204,31 @@ class Driver implements AccessDriverInterface
         $result = $this->access()->put($filename, $content, $append);
         if ($result === false) {
             throw new ErrorException();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $srcFilename
+     * @param $dstFilename
+     * @return bool
+     * @throws ErrorException
+     */
+    protected function copyStream($srcFilename, $dstFilename)
+    {
+        $this->createDirectory(Path::dirname($dstFilename));
+
+        if ($this->access()->isDir($dstFilename)) {
+            throw new ErrorException();
+        }
+
+        $source = fopen($srcFilename, 'rb');
+        $destination = fopen($dstFilename, "wb+");
+
+        $result = $this->access()->streamCopyToStream($source, $destination);
+        if (!$result && $result !== 0) {
+            return false;
         }
 
         return true;

@@ -115,4 +115,14 @@ class Access
     {
         return rename($src, $dst);
     }
+
+    /**
+     * @param $source
+     * @param $dest
+     * @return int
+     */
+    public function streamCopyToStream($source , $dest)
+    {
+        return stream_copy_to_stream($source, $dest);
+    }
 }

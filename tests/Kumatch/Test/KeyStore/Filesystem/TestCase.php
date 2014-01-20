@@ -10,10 +10,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /** @var  string */
     protected $dir;
     /** @var  string */
+    protected $textFilename;
+    /** @var  string */
     protected $binaryFilename;
 
     /** @var  string */
     protected $methodName;
+    protected $secondArgument;
 
     protected function setUp()
     {
@@ -24,12 +27,22 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $prefix = sprintf("%s-", strtolower( str_replace('\\', '-', get_called_class()) ));
         $this->dir = $temp->dir()->prefix($prefix)->create();
 
+        $this->textFilename   = __DIR__ . "/sample.txt";
         $this->binaryFilename = __DIR__ . "/sample.png";
     }
 
     protected function tearDown()
     {
         parent::tearDown();
+    }
+
+    protected function loadTextFile()
+    {
+        $fh = fopen($this->textFilename, "r");
+        $text = fread($fh, filesize($this->textFilename));
+        fclose($fh);
+
+        return $text;
     }
 
     protected function loadBinaryFile()
@@ -50,9 +63,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $driver = new Driver($this->dir);
 
         $key = "../foo";
-        $binary = $this->loadBinaryFile();
+        if (!$this->secondArgument) {
+            $this->secondArgument = $this->loadBinaryFile();
+        }
 
-        call_user_func_array(array($driver, $this->methodName), array($key, $binary));
+        call_user_func_array(array($driver, $this->methodName), array($key, $this->secondArgument));
     }
 
     /**
@@ -64,9 +79,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $driver = new Driver($this->dir);
 
         $key = "";
-        $binary = $this->loadBinaryFile();
+        if (!$this->secondArgument) {
+            $this->secondArgument = $this->loadBinaryFile();
+        }
 
-        call_user_func_array(array($driver, $this->methodName), array($key, $binary));
+
+        call_user_func_array(array($driver, $this->methodName), array($key, $this->secondArgument));
     }
 
     /**
@@ -78,8 +96,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $driver = new Driver($this->dir);
 
         $key = ".";
-        $binary = $this->loadBinaryFile();
+        if (!$this->secondArgument) {
+            $this->secondArgument = $this->loadBinaryFile();
+        }
 
-        call_user_func_array(array($driver, $this->methodName), array($key, $binary));
+        call_user_func_array(array($driver, $this->methodName), array($key, $this->secondArgument));
     }
 }

@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kumatch/keystore": "0.2",
+        "kumatch/keystore": "0.3",
         "kumatch/path": "*"
     },
     "require-dev": {
