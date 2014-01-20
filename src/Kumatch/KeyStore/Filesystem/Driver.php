@@ -219,12 +219,14 @@ class Driver implements AccessDriverInterface
     {
         $this->createDirectory(Path::dirname($dstFilename));
 
-        if ($this->access()->isDir($dstFilename)) {
+        $access = $this->access();
+
+        if ($access->isDir($dstFilename)) {
             throw new ErrorException();
         }
 
-        $source = fopen($srcFilename, "rb");
-        $destination = fopen($dstFilename, "wb");
+        $source = $access->fopen($srcFilename, "rb");
+        $destination = $access->fopen($dstFilename, "wb");
 
         $result = $this->access()->streamCopyToStream($source, $destination);
         if (!$result && $result !== 0) {

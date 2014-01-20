@@ -125,4 +125,14 @@ class Access
     {
         return stream_copy_to_stream($source, $dest);
     }
+
+    /**
+     * @param $filename
+     * @param $mode
+     * @return resource
+     */
+    public function fopen($filename, $mode)
+    {
+        return fopen($filename, $mode);
+    }
 }
