@@ -223,8 +223,8 @@ class Driver implements AccessDriverInterface
             throw new ErrorException();
         }
 
-        $source = fopen($srcFilename, 'rb');
-        $destination = fopen($dstFilename, "wb+");
+        $source = fopen($srcFilename, 'r');
+        $destination = fopen($dstFilename, "w");
 
         $result = $this->access()->streamCopyToStream($source, $destination);
         if (!$result && $result !== 0) {
