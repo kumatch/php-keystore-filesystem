@@ -38,7 +38,7 @@ $driver = new Driver($rootPath);
 
 Set a file system directory path for file storage.
 
-If $rootPath is not direcotry or not exists, throw exception `Kumatch\KeyStore\Filesystem\Exception\InvalidArgumentException`.
+If $rootPath is not directory or not exists, throw exception `Kumatch\KeyStore\Filesystem\Exception\InvalidArgumentException`.
 
 
 
